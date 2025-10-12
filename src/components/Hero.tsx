@@ -3,6 +3,7 @@ import { Card } from './ui/card';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { CheckCircle, Zap, Users, Award, Flame } from 'lucide-react';
 import { moveToContact } from '../utils/move-to-contact';
+import SALON_CHANGAN from '../../public/assets/changan-salon.jpg';
 
 export function Hero() {
   const stats = [
@@ -99,7 +100,7 @@ export function Hero() {
           <div className="relative mt-8 xl:mt-0 overflow-visible px-3 sm:px-0">
             <Card className="overflow-hidden shadow-2xl border-2 border-blue-600/30 bg-gray-900/50">
               <ImageWithFallback
-                src="https://images.unsplash.com/photo-1609465397944-be1ce3ebda61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBjYXIlMjBpbnRlcmlvciUyMGRhc2hib2FyZHxlbnwxfHx8fDE3NTY5OTM1MTh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                src={SALON_CHANGAN}
                 alt="Русифицированная панель автомобиля"
                 className="w-full h-64 sm:h-80 md:h-96 xl:h-[28rem] object-cover"
               />
@@ -119,7 +120,7 @@ export function Hero() {
             <div className="absolute -bottom-3 sm:-bottom-4 xl:-bottom-6 -right-1 sm:-right-2 xl:-right-6 bg-gradient-to-r from-gray-800 to-gray-700 rounded-md sm:rounded-lg xl:rounded-xl p-1.5 sm:p-2 md:p-3 xl:p-4 shadow-lg border border-blue-600/50 sm:border-2 z-10">
               <div className="text-center">
                 <div className="text-lg sm:text-xl md:text-2xl xl:text-2xl font-black text-blue-400">
-                  24Ч
+                  1Ч
                 </div>
                 <div className="text-[9px] sm:text-[10px] md:text-xs xl:text-xs text-gray-300 font-bold uppercase whitespace-nowrap">
                   ВРЕМЯ АТАКИ

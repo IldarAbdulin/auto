@@ -66,7 +66,7 @@ export function Header() {
           <div className="hidden lg:flex items-center space-x-4">
             <div className="hidden xl:flex items-center text-sm text-gray-300 bg-gray-800/50 px-3 py-2 rounded-lg border border-blue-600/30">
               <Phone className="w-4 h-4 mr-2 text-blue-400" />
-              +996 707 121 296
+              +996 553 241 204
             </div>
             <Button
               size="sm"
@@ -123,7 +123,7 @@ export function Header() {
                         <p className="text-xs text-gray-400 font-semibold uppercase">
                           Телефон
                         </p>
-                        <p className="text-white font-bold">+996 707 121 296</p>
+                        <p className="text-white font-bold">+996 553 241 204</p>
                       </div>
                     </div>
                   </div>

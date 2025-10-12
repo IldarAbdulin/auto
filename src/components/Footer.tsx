@@ -17,14 +17,16 @@ export function Footer() {
             </p>
             <div className="flex space-x-4">
               <a
-                href="#"
-                className="text-gray-400 hover:text-blue-400 transition-colors"
+                href="https://www.instagram.com/dil_auto/"
+                target="_blank"
+                className="text-gray-400 hover:text-purple-400 transition-colors"
               >
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="#"
-                className="text-gray-400 hover:text-blue-400 transition-colors"
+                href="https://wa.me/message/PXST4OTKBCRRO1"
+                target="_blank"
+                className="text-gray-400 hover:text-green-400 transition-colors"
               >
                 <MessageCircle className="w-5 h-5" />
               </a>
@@ -90,13 +92,13 @@ export function Footer() {
               <div className="flex items-center">
                 <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2 sm:mr-3 text-blue-400 flex-shrink-0" />
                 <span className="text-sm sm:text-base font-medium">
-                  +996 707 121 296
+                  +996 553 241 204
                 </span>
               </div>
               <div className="flex items-start">
                 <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2 sm:mr-3 mt-0.5 text-blue-400 flex-shrink-0" />
                 <span className="text-sm sm:text-base font-medium">
-                  г. Бишкек, ул. Анкара 10Б
+                  г. Бишкек, ул. Анкара 10Б, 40 бутик
                 </span>
               </div>
             </div>
@@ -105,7 +107,7 @@ export function Footer() {
 
         <div className="border-t border-blue-600/30 mt-6 sm:mt-8 pt-6 sm:pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-300 text-xs sm:text-sm font-medium text-center md:text-left">
-            © 2024 <span className="text-blue-400 font-bold">DIL AUTO</span>.
+            © 2022 <span className="text-blue-400 font-bold">DIL AUTO</span>.
             Все права защищены.
           </p>
         </div>

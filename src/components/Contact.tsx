@@ -4,6 +4,7 @@ import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Phone, MapPin, Clock, MessageCircle, Send } from 'lucide-react';
 import { PhoneInput } from './ui/phoneInput';
+import { moveToContact } from '../utils/move-to-contact';
 
 export function Contact() {
   return (
@@ -120,7 +121,7 @@ export function Contact() {
                       ТЕЛЕФОН
                     </h3>
                     <p className="text-sm sm:text-base text-gray-300 font-medium">
-                      +996 707 121 296
+                      +996 553 241 204
                     </p>
                   </div>
                 </div>
@@ -159,7 +160,7 @@ export function Contact() {
                       АДРЕС БАЗЫ
                     </h3>
                     <p className="text-sm sm:text-base text-gray-300 font-medium">
-                      г. Бишкек, ул. Анкара 10Б
+                      г. Бишкек, ул. Анкара 10Б, 40 бутик
                     </p>
                   </div>
                 </div>
@@ -174,13 +175,10 @@ export function Contact() {
                   </div>
                   <div>
                     <h3 className="text-sm sm:text-base font-black text-blue-400 mb-1 uppercase tracking-wide">
-                      РЕЖИМ АТАК
+                      РЕЖИМ РАБОТЫ
                     </h3>
                     <p className="text-sm sm:text-base text-gray-300 font-medium">
-                      Пн-Пт: 10:00 - 00:00
-                    </p>
-                    <p className="text-sm sm:text-base text-gray-300 font-medium">
-                      Сб-Вс: 10:00 - 00:00
+                      Каждый день без выходных с 10:00 до 00:00
                     </p>
                   </div>
                 </div>
@@ -191,7 +189,7 @@ export function Contact() {
 
         <div className="mt-8 sm:mt-12 lg:mt-16 bg-gradient-to-r from-red-900/50 to-orange-900/50 border-2 border-red-500/50 rounded-xl sm:rounded-2xl p-6 sm:p-8 text-center backdrop-blur-sm">
           <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white mb-3 sm:mb-4 uppercase tracking-wide">
-            🚨 <span className="text-red-400">ЭКСТРЕННАЯ</span> АТАКА 🚨
+            🚨 <span className="text-red-400">ЭКСТРЕННАЯ</span> РУСИФИКАЦИЯ 🚨
           </h3>
           <p className="text-sm sm:text-base text-gray-300 mb-4 sm:mb-6 max-w-2xl mx-auto font-medium px-2">
             Нужно{' '}
@@ -206,7 +204,10 @@ export function Contact() {
             className="border-2 border-red-500 text-red-400 hover:bg-red-500/10 font-black uppercase tracking-wider w-full sm:w-auto py-4 sm:py-6"
           >
             <Phone className="w-4 h-4 mr-2" />
-            <span className="hidden sm:inline cursor-pointer">
+            <span
+              onClick={moveToContact}
+              className="hidden sm:inline cursor-pointer"
+            >
               ВЫЗВАТЬ ЭКСТРЕННУЮ СЛУЖБУ
             </span>
             <span className="sm:hidden cursor-pointer">ЭКСТРЕННАЯ СЛУЖБА</span>

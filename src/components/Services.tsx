@@ -23,34 +23,21 @@ export function Services() {
         'Медиаплеер',
         'Настройки системы',
       ],
-      price: 'от 15 000 ₽',
       popular: true,
     },
     {
       icon: Settings,
       title: 'БОРТОВОЙ КОМПЬЮТЕР',
       description: 'Захват всех меню настроек автомобиля русским языком',
-      features: [
-        'Меню настроек',
-        'Индикаторы приборов',
-        'Сервисные сообщения',
-        'Диагностика',
-      ],
-      price: 'от 8 000 ₽',
+      features: ['Меню настроек', 'Индикаторы приборов', 'Сервисные сообщения'],
       popular: false,
     },
     {
       icon: Smartphone,
-      title: 'МОБИЛЬНОЕ ПРИЛОЖЕНИЕ',
+      title: 'Установка приложений',
       description:
         'Тотальная русификация официального приложения производителя',
-      features: [
-        'Удаленный запуск',
-        'Климат-контроль',
-        'Статистика поездок',
-        'Уведомления',
-      ],
-      price: 'от 5 000 ₽',
+      features: ['YouTube', 'Spotify', 'Google', 'Алиса'],
       popular: false,
     },
     {
@@ -58,12 +45,12 @@ export function Services() {
       title: 'НАВИГАЦИОННАЯ СИСТЕМА',
       description: 'Установка и настройка агрессивной русскоязычной навигации',
       features: [
-        'Карты России',
+        'Карты Кырзстана',
         'Голосовые подсказки',
         'Пробки онлайн',
-        'POI на русском',
+        'Yandex Навигатор',
+        ` 2ГИС`,
       ],
-      price: 'от 12 000 ₽',
       popular: false,
     },
   ];
@@ -148,9 +135,6 @@ export function Services() {
                     </li>
                   ))}
                 </ul>
-                <div className="text-base sm:text-lg font-black text-blue-400">
-                  {service.price}
-                </div>
               </CardContent>
             </Card>
           ))}

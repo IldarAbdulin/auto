@@ -2,42 +2,52 @@ import { Card, CardContent } from './ui/card';
 import { Badge } from './ui/badge';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { Star, Clock, CheckCircle } from 'lucide-react';
+import Weltmeister from '../../public/assets/wex.jpg';
+import BYD from '../../public/assets/byd.png';
+import CHANGAN from '../../public/assets/changan.webp';
 
 export function Portfolio() {
   const projects = [
     {
-      brand: 'BMW',
-      model: 'X5 G05 2019',
-      image:
-        'https://images.unsplash.com/photo-1636868240132-442d20fd00e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHxjYXIlMjBkYXNoYm9hcmQlMjBkaXNwbGF5JTIwc2NyZWVufGVufDF8fHx8MTc1NzA5NDM0Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-      services: ['iDrive 7.0', 'Навигация', 'Голосовое управление'],
-      duration: '1 день',
+      brand: 'Weltmeister',
+      model: 'EX5',
+      image: Weltmeister,
+      services: ['Русификация', 'Установка Приложений', 'Навигация'],
+      duration: '1 час',
       rating: 5,
-      client: 'Александр М.',
+      client: 'Рустам Б.',
       review:
-        'БРУТАЛЬ! Теперь все меню на русском языке, навигация работает как зверь!',
+        'Русификация четкая! Все сделано быстро и профессионально. Рахмат! Машина зверь',
     },
     {
-      brand: 'Mercedes-Benz',
-      model: 'GLE 2020',
-      image:
-        'https://images.unsplash.com/photo-1549047608-55b2fd4b8427?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBhdXRvbW90aXZlJTIwc2VydmljZSUyMGdhcmFnZXxlbnwxfHx8fDE3NTcwOTQzNDR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-      services: ['MBUX', 'Мультимедиа', 'Бортовой компьютер'],
-      duration: '2 дня',
+      brand: 'BYD',
+      model: 'Song Plus',
+      image: BYD,
+      services: [
+        'Русификация',
+        'Установка Приложений',
+        'Установка sim-карты',
+        'Голосовое управление',
+      ],
+      duration: '1.5 часа',
       rating: 5,
       client: 'Елена К.',
       review:
-        'Профессиональная атака! Все сделано мощно и в срок. Рекомендую на 100%!',
+        'Спасибо большое за проделанную работу! Теперь я могу наслаждаться своим автомобилем на все 100%. Dil Auto - лучшие!',
     },
     {
-      brand: 'Audi',
-      model: 'Q7 2021',
-      image:
-        'https://images.unsplash.com/photo-1609465397944-be1ce3ebda61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBjYXIlMjBpbnRlcmlvciUyMGRhc2hib2FyZHxlbnwxfHx8fDE3NTY5OTM1MTh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-      services: ['MMI Plus', 'Виртуальная приборка', 'Навигация'],
-      duration: '1 день',
+      brand: 'Changan',
+      model: 'Uni Z',
+      image: CHANGAN,
+      services: [
+        'Русификация',
+        'Установка приложений',
+        'Камера 360',
+        'Race Mode',
+      ],
+      duration: '1 час',
       rating: 5,
-      client: 'Дмитрий С.',
+      client: 'Байхан Т.',
       review:
         'Быстро, качественно, мощно! Теперь пользоваться автомобилем - одно удовольствие.',
     },
