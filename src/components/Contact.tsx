@@ -5,14 +5,161 @@ import { Textarea } from './ui/textarea';
 import { Phone, MapPin, Clock, MessageCircle, Send } from 'lucide-react';
 import { PhoneInput } from './ui/phoneInput';
 import { moveToContact } from '../utils/move-to-contact';
+import { useState, useRef } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
+import {
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from '../utils/toast-utilts';
 
 export function Contact() {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    model: '',
+    message: '',
+  });
+
+  const [fieldErrors, setFieldErrors] = useState({
+    name: false,
+    phone: false,
+    model: false,
+  });
+
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [isSending, setIsSending] = useState(false);
+  const [isSent, setIsSent] = useState(false);
+  const [lastSubmitTime, setLastSubmitTime] = useState(0);
+
+  const handleChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const sanitizeInput = (input: string): string => {
+    return input.replace(/<[^>]*>/g, '').trim();
+  };
+
+  const validateEmail = (email: string): boolean => {
+    if (!email) return true;
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const validatePhone = (phone: string): boolean => {
+    const regex = /^\+?[\d\s-()]{9,}$/;
+    return regex.test(phone);
+  };
+
+  async function sendMessageToTelegramGroup() {
+    const currentTime = Date.now();
+    if (currentTime - lastSubmitTime < 20000) return;
+
+    setFieldErrors({
+      name: false,
+      phone: false,
+      model: false,
+    });
+
+    let hasErrors = false;
+    const newErrors = {
+      name: !formData.name,
+      phone: !formData.phone || !validatePhone(formData.phone),
+      model: !formData.model,
+    };
+
+    if (Object.values(newErrors).some((error) => error)) {
+      setFieldErrors(newErrors);
+      showInfoToast('Пожалуйста, заполните все обязательные поля.');
+      return;
+    }
+
+    if (!validateEmail(formData.email)) {
+      showInfoToast('Пожалуйста, введите корректный email.');
+      return;
+    }
+
+    if (!validatePhone(formData.phone)) {
+      showInfoToast('Пожалуйста, введите корректный номер телефона.');
+      return;
+    }
+
+    if (hasErrors) return;
+
+    const recaptchaValue = recaptchaRef.current?.getValue();
+    if (!recaptchaValue) {
+      showInfoToast('Пожалуйста, подтвердите что вы не робот');
+      return;
+    }
+
+    const botToken = import.meta.env.VITE_TOKEN;
+    const chatId = import.meta.env.VITE_CHAT_ID;
+    const url = `${import.meta.env.VITE_API_URL}/bot${botToken}/sendMessage`;
+
+    const sanitizedData = {
+      name: sanitizeInput(formData.name),
+      phone: sanitizeInput(formData.phone),
+      email: sanitizeInput(formData.email),
+      model: sanitizeInput(formData.model),
+      message: sanitizeInput(formData.message),
+    };
+
+    const messageText = `
+      <b>📩 Новая заявка с сайта DilAuto:</b>\n
+👤 <b>Имя:</b> ${sanitizedData.name}\n
+📞 <b>Телефон:</b> ${sanitizedData.phone}\n
+📧 <b>Email:</b> ${sanitizedData.email || '—'}\n
+🚗 <b>Модель авто:</b> ${sanitizedData.model}\n
+💬 <b>Сообщение:</b> ${sanitizedData.message || '—'}
+`;
+
+    setIsSending(true);
+    setIsSent(false);
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          message_thread_id: 1494,
+          text: messageText,
+          parse_mode: 'HTML',
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.ok) {
+        setIsSent(true);
+        setLastSubmitTime(currentTime);
+        setFormData({
+          name: '',
+          phone: '',
+          email: '',
+          model: '',
+          message: '',
+        });
+        recaptchaRef.current?.reset();
+        showSuccessToast('Сообщение успешно отправлено!');
+      } else {
+        console.error('Ошибка Telegram:', result);
+        showErrorToast('Ошибка при отправке сообщения. Попробуйте еще раз.');
+      }
+    } catch (error) {
+      console.error('Ошибка сети:', error);
+      showErrorToast('Ошибка при отправке сообщения. Попробуйте еще раз.');
+    } finally {
+      setIsSending(false);
+    }
+  }
+
   return (
     <section
       id="contact"
       className="py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-black to-gray-900 relative overflow-hidden"
     >
-      {/* Фоновые эффекты */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-blue-800/10 rounded-full blur-3xl"></div>
@@ -50,7 +197,16 @@ export function Contact() {
                     </label>
                     <Input
                       placeholder="Ваше имя"
-                      className="bg-gray-700/50 border-gray-600 text-white placeholder-gray-400 focus:border-blue-600 text-sm sm:text-base"
+                      value={formData.name}
+                      onChange={(e) => {
+                        handleChange('name', e.target.value);
+                        setFieldErrors((prev) => ({ ...prev, name: false }));
+                      }}
+                      className={`bg-gray-700/50 border-gray-600 text-white ${
+                        fieldErrors.name
+                          ? 'placeholder-red-500 border-red-500 focus:border-red-500'
+                          : 'placeholder-gray-400 focus:border-blue-600'
+                      } text-sm sm:text-base`}
                     />
                   </div>
                   <div>
@@ -58,8 +214,16 @@ export function Contact() {
                       Телефон *
                     </label>
                     <PhoneInput
-                      onChange={(e) => console.log(e.target.value)}
-                      className="w-full"
+                      value={formData.phone}
+                      onChange={(e) => {
+                        handleChange('phone', e.target.value);
+                        setFieldErrors((prev) => ({ ...prev, phone: false }));
+                      }}
+                      className={`w-full ${
+                        fieldErrors.phone
+                          ? '!border-red-500 [&_input]:placeholder-red-500'
+                          : ''
+                      }`}
                     />
                   </div>
                 </div>
@@ -71,17 +235,28 @@ export function Contact() {
                   <Input
                     type="email"
                     placeholder="your@email.com"
+                    value={formData.email}
+                    onChange={(e) => handleChange('email', e.target.value)}
                     className="bg-gray-700/50 border-gray-600 text-white placeholder-gray-400 focus:border-blue-600 text-sm sm:text-base"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs sm:text-sm text-blue-400 mb-1 sm:mb-2 font-bold uppercase">
-                    Марка и модель жертвы *
+                    Марка и модель машины *
                   </label>
                   <Input
                     placeholder="CHANGAN X5"
-                    className="bg-gray-700/50 border-gray-600 text-white placeholder-gray-400 focus:border-blue-600 text-sm sm:text-base"
+                    value={formData.model}
+                    onChange={(e) => {
+                      handleChange('model', e.target.value);
+                      setFieldErrors((prev) => ({ ...prev, model: false }));
+                    }}
+                    className={`bg-gray-700/50 border-gray-600 text-white ${
+                      fieldErrors.model
+                        ? 'placeholder-red-500 border-red-500 focus:border-red-500'
+                        : 'placeholder-gray-400 focus:border-blue-600'
+                    } text-sm sm:text-base`}
                   />
                 </div>
 
@@ -92,13 +267,31 @@ export function Contact() {
                   <Textarea
                     placeholder="Расскажите, какой тип атаки вас интересует..."
                     rows={4}
+                    value={formData.message}
+                    onChange={(e) => handleChange('message', e.target.value)}
                     className="bg-gray-700/50 border-gray-600 text-white placeholder-gray-400 focus:border-blue-600 text-sm sm:text-base"
                   />
                 </div>
 
-                <Button className="w-full bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-600 hover:to-blue-700 text-white font-black border-0 shadow-lg shadow-blue-600/25 uppercase tracking-wider py-4 sm:py-6 cursor-pointer">
+                <div className="mb-4">
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                    theme="dark"
+                  />
+                </div>
+
+                <Button
+                  disabled={isSending}
+                  className="w-full bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-600 hover:to-blue-700 text-white font-black border-0 shadow-lg shadow-blue-600/25 uppercase tracking-wider py-4 sm:py-6 cursor-pointer"
+                  onClick={sendMessageToTelegramGroup}
+                >
                   <Send className="w-4 h-4 mr-2" />
-                  НАЧАТЬ АТАКУ
+                  {isSending
+                    ? 'Отправка...'
+                    : isSent
+                    ? 'Заявка отправлена ✅'
+                    : 'НАЧАТЬ АТАКУ'}
                 </Button>
 
                 <p className="text-xs sm:text-sm text-gray-400 text-center font-medium">
@@ -127,27 +320,6 @@ export function Contact() {
                 </div>
               </CardContent>
             </Card>
-
-            {/* <Card className="bg-gray-800/50 border-2 border-gray-700 hover:border-blue-600/50 transition-colors">
-              <CardContent className="p-4 sm:p-6">
-                <div className="flex items-start space-x-3 sm:space-x-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm sm:text-base font-black text-blue-400 mb-1 uppercase tracking-wide">
-                      EMAIL
-                    </h3>
-                    <p className="text-sm sm:text-base text-gray-300 font-medium">
-                      info@dilauto.ru
-                    </p>
-                    <p className="text-sm sm:text-base text-gray-300 font-medium">
-                      support@dilauto.ru
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card> */}
 
             <Card className="bg-gray-800/50 border-2 border-gray-700 hover:border-blue-600/50 transition-colors">
               <CardContent className="p-4 sm:p-6">
