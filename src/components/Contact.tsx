@@ -228,7 +228,7 @@ export function Contact() {
                   </div>
                 </div>
 
-                <div>
+                {/* <div>
                   <label className="block text-xs sm:text-sm text-blue-400 mb-1 sm:mb-2 font-bold uppercase">
                     Email
                   </label>
@@ -239,7 +239,7 @@ export function Contact() {
                     onChange={(e) => handleChange('email', e.target.value)}
                     className="bg-gray-700/50 border-gray-600 text-white placeholder-gray-400 focus:border-blue-600 text-sm sm:text-base"
                   />
-                </div>
+                </div> */}
 
                 <div>
                   <label className="block text-xs sm:text-sm text-blue-400 mb-1 sm:mb-2 font-bold uppercase">
