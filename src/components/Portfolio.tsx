@@ -2,9 +2,9 @@ import { Card, CardContent } from './ui/card';
 import { Badge } from './ui/badge';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { Star, Clock, CheckCircle } from 'lucide-react';
-import Weltmeister from '../../public/assets/wex.jpg';
-import BYD from '../../public/assets/byd.png';
-import CHANGAN from '../../public/assets/changan.webp';
+import Weltmeister from '../assets/wex.jpg';
+import BYD from '../assets/byd.png';
+import CHANGAN from '../assets/changan.webp';
 
 export function Portfolio() {
   const projects = [

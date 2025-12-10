@@ -3,7 +3,7 @@ import { Card } from './ui/card';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { CheckCircle, Zap, Users, Award, Flame } from 'lucide-react';
 import { moveToContact } from '../utils/move-to-contact';
-import SALON_CHANGAN from '../../public/assets/changan-salon.jpg';
+import SALON_CHANGAN from '../assets/changan-salon.jpg';
 
 export function Hero() {
   const stats = [
